@@ -71,7 +71,10 @@ function App() {
         ) : null}
         <Routes>
           <Route element={<Allposts />} path="/" exact />
-          <Route element={<Login />} path="/login" />
+          <Route
+            element={<Login setAlert={setAlert} setUser={setUser} />}
+            path="/login"
+          />
           <Route
             element={<SignUp setAlert={setAlert} setUser={setUser} />}
             path="/sign-up"

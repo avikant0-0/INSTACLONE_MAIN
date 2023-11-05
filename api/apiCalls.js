@@ -12,4 +12,20 @@ functions.createUser = (firstName, lastName, userName) => {
   });
 };
 
+functions.getProfile = (user) => {
+  return sanityClient.fetch(
+    `*[_type == "user" && user_name == $username]{
+      ...,
+      "following" : count(following),
+      "followers" : *[_type == "user" && references(^._id)],
+      photo{
+        asset->{
+          _id,
+          url
+        }
+      }
+    }`,
+    { username: user }
+  );
+};
 export default functions;
