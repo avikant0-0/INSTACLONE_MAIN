@@ -70,7 +70,7 @@ function App() {
           <AlertDismissible {...alert} deleteAlert={() => setAlert(null)} />
         ) : null}
         <Routes>
-          <Route element={<Allposts />} path="/" exact />
+          <Route element={<Allposts user={user} />} path="/" exact />
           <Route
             element={<Login setAlert={setAlert} setUser={setUser} />}
             path="/login"

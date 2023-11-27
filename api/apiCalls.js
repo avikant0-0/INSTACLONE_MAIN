@@ -58,4 +58,53 @@ functions.createPost = (user, caption, image) => {
       })
     );
 };
+
+functions.getAllPosts = () => {
+  return sanityClient.fetch(`*[_type == "post" ]{
+    ...,
+    "username": author->user_name,
+    photo{
+      asset->{
+        _id,
+        url
+      }
+    }
+  }`);
+};
+
+functions.getPostsOfFollowing = (username) => {
+  return sanityClient.fetch(
+    `*[_type == "user" && user_name == $username]{
+    following[]->{
+      "posts": *[_type == "post" && references(^._id)]{
+        ...,
+        "username": author->user_name,
+        photo{
+          asset->{
+            _id,
+            url
+          }
+        }
+      }
+    }
+  }`,
+    { username }
+  );
+};
+
+functions.searchForUsername = (text) => {
+  return sanityClient.fetch(
+    `*[_type == "user" && user_name match "${text}*"]{
+      ...,
+      "followers": count(*[_type == "user" && references(^._id)]),
+      photo{
+          asset->{
+          _id,
+          url
+        }
+      }
+    }`
+  );
+};
+
 export default functions;

@@ -6,6 +6,11 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'user_name',
+      title: 'User Name',
+      type: 'string',
+    }),
+    defineField({
       name: 'first_name',
       title: 'First Name',
       type: 'string',
@@ -15,11 +20,7 @@ export default defineType({
       title: 'Last Name',
       type: 'string',
     }),
-    defineField({
-      name: 'user_name',
-      title: 'User Name',
-      type: 'string',
-    }),
+
     defineField({
       name: 'photo',
       title: 'Photo',
