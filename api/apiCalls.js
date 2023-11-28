@@ -107,4 +107,19 @@ functions.searchForUsername = (text) => {
   );
 };
 
+functions.getPosts = (username) => {
+  return sanityClient.fetch(
+    `*[_type == "post" && author-> user_name == $username]{
+    ...,
+    "user_name" :author->user_name,
+    photo{
+      asset->{
+        _id,
+        url
+      }
+    }
+  }`,
+    { username }
+  );
+};
 export default functions;

@@ -2,7 +2,7 @@ import { Button, ListGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileItem({
-  username,
+  user_name,
   first_name,
   last_name,
   photo,
@@ -20,7 +20,7 @@ export default function ProfileItem({
           />
           <div>
             <p className="px-2 m-0">
-              <strong>{username}</strong>
+              <strong>@{user_name}</strong>
             </p>
             <p className="px-2 m-0">
               {(first_name ? first_name : "") +
@@ -36,7 +36,7 @@ export default function ProfileItem({
           <Button
             variant="success"
             className="px-2 m-0"
-            onClick={() => navigate("/profile/" + username)}
+            onClick={() => navigate("/profile/" + user_name)}
           >
             View
           </Button>

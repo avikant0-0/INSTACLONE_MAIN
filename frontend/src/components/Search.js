@@ -10,7 +10,10 @@ export default function Search() {
   function search() {
     fetch("http://localhost:3001/searchForUsername?text=" + searchText)
       .then((res) => res.json())
-      .then((data) => updateSearchResults(data))
+      .then((data) => {
+        updateSearchResults(data);
+        console.log(data);
+      })
       .catch((err) => console.error(err));
   }
 

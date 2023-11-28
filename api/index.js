@@ -10,6 +10,7 @@ const {
   getAllPosts,
   getPostsOfFollowing,
   searchForUsername,
+  getPosts,
 } = functions;
 // this lets us recieve data
 const app = express();
@@ -69,6 +70,11 @@ app.get("/getAllPosts", (req, res) => {
 app.get("/searchForUsername", (req, res) => {
   const text = req.query.text;
   searchForUsername(text).then((data) => res.json(data));
+});
+
+app.get("/getPosts", (req, res) => {
+  const user = req.query.username;
+  getPosts(user).then((data) => res.json(data));
 });
 
 app.listen(3001, () => console.log("started"));
