@@ -89,6 +89,9 @@ function App() {
             path="/create-post"
           />
           <Route />
+          <Route
+            element={<EditProfile user={user} setAlert={setAlert} />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>

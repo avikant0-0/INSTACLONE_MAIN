@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import functions from "./apiCalls.js";
 import cors from "cors";
 import multer from "multer";
+import { nanoid } from "nanoid";
 const {
   createUser,
   getProfile,
@@ -11,6 +12,9 @@ const {
   getPostsOfFollowing,
   searchForUsername,
   getPosts,
+  updateProfile,
+  addFollower,
+  removeFollower,
 } = functions;
 // this lets us recieve data
 const app = express();
@@ -55,7 +59,7 @@ app.get("/getPostsOfFollowing", (req, res) => {
       posts = posts.map((post) => post.posts);
       posts = posts.flat(1);
       res.json(posts);
-      console.log(posts);
+      // console.log(posts);
     })
     .catch((err) => res.json([]));
 });
@@ -75,6 +79,30 @@ app.get("/searchForUsername", (req, res) => {
 app.get("/getPosts", (req, res) => {
   const user = req.query.username;
   getPosts(user).then((data) => res.json(data));
+});
+
+app.post("/updateProfile", upload.single("file"), (req, res) => {
+  const body = req.body;
+  console.log(body);
+  // console.log(body.user[0]);
+  updateProfile(
+    body.user,
+    body.first_name,
+    body.last_name,
+    body.bio,
+    req.file
+  ).then((data) => res.json(data));
+});
+
+app.post("/addFollower", (req, res) => {
+  const body = req.body;
+  // console.log(body.user);
+  addFollower(body.user, body.id).then((data) => res.json(data));
+});
+
+app.delete("/removeFollower", (req, res) => {
+  const body = req.body;
+  removeFollower(body.user, body.id).then((data) => res.json(data));
 });
 
 app.listen(3001, () => console.log("started"));

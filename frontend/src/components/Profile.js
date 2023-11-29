@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import EditProfile from "./EditProfile";
+
 import "../css/Profile.css";
 export default function Profile(user, setAlert) {
   const [profileData, setProfileData] = useState({});
@@ -17,7 +18,7 @@ export default function Profile(user, setAlert) {
 
   function updateFollowing(profile) {
     for (let follower of profile.followers) {
-      if (follower.username === user) {
+      if (follower.user_name === user.user) {
         setFollowing(true);
         return;
       }
@@ -43,17 +44,54 @@ export default function Profile(user, setAlert) {
             setPosts(posts);
             updateFollowing(data[0]);
             // console.log(user);
-            // console.log(data);
+            console.log(data);
             setOwner(user.user === data[0].user_name);
           });
       })
       .catch((err) => console.error(err));
   }
-  function followClick() {}
-  function hideEditCallback() {}
+  function followClick() {
+    if (owner) return;
+    console.log(user.user);
+    console.log(params.username);
+    if (!following) {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user: user.user, id: profileData._id }),
+      };
+      fetch("http://localhost:3001/addFollower", requestOptions)
+        .then((res) => res.json())
+        .then((data) => updateProfile(params.username));
+    } else {
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user: user.user, id: profileData._id }),
+      };
+      fetch("http://localhost:3001/removeFollower", requestOptions)
+        .then((res) => res.json())
+        .then((data) => updateProfile(params.username));
+    }
+  }
+  function hideEditCallback() {
+    updateProfile(params.username);
+    setEditing(false);
+  }
   if (profileData == {}) return null;
   return (
     <div className="profile">
+      <EditProfile
+        user={user}
+        show={editing}
+        hideCallBack={hideEditCallback}
+        profileData={profileData}
+        setAlert={setAlert}
+      />
       <div className="profile-banner">
         <h4>@{profileData.user_name}</h4>
         <div className="profile-data">
